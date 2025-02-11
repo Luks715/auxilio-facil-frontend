@@ -29,7 +29,6 @@ export interface CreateUser {
     cpf: string;
     nome: string;
     data_nascimento: Date;
-    responsávelId: null;
 
     email: string;
     senha: string;

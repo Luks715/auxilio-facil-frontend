@@ -1,13 +1,39 @@
-export interface CondicaoData {
+export interface CondicaoData { 
     id: number;
     tipo: string; // exemplo: "desempregado", "gestante", "autista", etc.
+
+    cidadaos: CidadaoCondicao[]
 }
 
-export interface CasoEspecialData {
+export interface CidadaoCondicao {
     id: number;
     condicaoId: number;
     cidadaoId: number;
-    data_fim?: Date;
+    data_inicio: Date;
+    valido_ate?: Date;
+}
+
+export interface AuxilioData {
+    id: number;
+    nome: string;
+    valor_minimo: number;
+    descricao: string;
+    tem_vagas: boolean;
+}
+
+export interface CidadaoAuxilio {
+    id: number;           
+    cidadaoId: number;
+    auxilioId: number;
+    inscrito: Boolean;
+    elegivel: Boolean;
+  }
+
+export interface CidadaoDependetes {
+    id: number;
+    responsavelId: number;
+    dependenteId: number;
+    status: String;
 }
 
 export interface CidadaoData {
@@ -16,36 +42,25 @@ export interface CidadaoData {
     cpf: string;
     nome: string;
     data_nascimento: Date;
-    responsavelId: number | null;
-    enderecoId: number;
-  
-    responsavel: CidadaoData | null;
-    dependentes: CidadaoData[];
-    condicoes: CondicaoData[];  // Relacionamento com as condições
-    casosEspeciais: CasoEspecialData[]; // Relacionamento com casos especiais
+
+    responsavel: CidadaoDependetes | null;
+    dependentes: CidadaoDependetes[]; // Relacionamento com dependentes
+    auxilios: CidadaoAuxilio[]; // Relacionamento com auxílios
+    condicoes: CidadaoCondicao[]; // Relacionamento com as condições
 }
 
 export interface UpdateCidadao {
-    nome?: string;
-    responsavelId?: number;
-    enderecoId: number;
-    condicoes?: number[]; // IDs das condições associadas
+    
 }
 
-export interface CreateCidadao {
+export interface CreateCidadaoData {
     cpf: string;
     nome: string;
     data_nascimento: Date;
-    responsavelId: null;
-    enderecoId: number;
-    condicoes?: number[];
 }
 
-export interface CreateDependente {
-    cpf: string;
-    nome: string;
-    data_nascimento: Date;
+export interface CreateDependenteData {
+    createCidadao: CreateCidadaoData;
+    status: string;
     responsavelId: number;
-    enderecoId: number;
-    condicoes?: number[];
 }

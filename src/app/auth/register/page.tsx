@@ -11,10 +11,11 @@ export default function SignIn() {
     municipio: "",
     bairro: "",
     complemento: "",
+    
     cpf: "",
     nome: "",
     data_nascimento: new Date(),
-    responsávelId: null,
+    
     email: "",
     senha: "",
     tipo: "",
