@@ -3,13 +3,15 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { findCidadaoByCpf } from "./_api/cidadaosApi";
-import { analiseAuxilios } from "./_api/analiseApi";
-import { AuxilioData } from "@/types/auxilio";
+import { CidadaoAuxilios, CidadaoData } from "@/types/cidadao";
 import AuxiliosInscritos from "@/components/entidades/auxilios/inscritos";
+import AuxiliosElegiveis from "@/components/entidades/auxilios/elegiveis";
+import Dependente from "@/components/entidades/dependentes";
 
 export default function Home() {
   const [cpf, setCpf] = useState("");
-  const [auxilios, setAuxilios] = useState<AuxilioData[]>([]); // Estado para armazenar os auxílios
+  const [cidadao, setCidadao]   = useState<CidadaoData>()
+  const [auxilios, setAuxilios] = useState<CidadaoAuxilios[]>([]); // Estado para armazenar os auxílios
   const [mensagem, setMensagem] = useState<string>(""); // Estado para armazenar a mensagem retornada
   const router = useRouter();
 
@@ -18,37 +20,24 @@ export default function Home() {
 
     try {
       const cidadao = await findCidadaoByCpf(cpf);
-      console.log(cidadao.id);
-      console.log(cidadao.registro_auxilios);
-      const resultado = await analiseAuxilios(cidadao.id);
-
-      // Verificando se a resposta tem a chave 'message' e atualizando a mensagem
-      if (resultado && resultado.message) {
-        setMensagem(resultado.message);  // Aqui estamos tratando a mensagem como uma string
-      } else {
-        setMensagem("Erro ao obter a mensagem de análise.");
-      }
-
-      // Recuperando os auxílios completos do cidadão
-      const auxilios = cidadao.registro_auxilios.map((auxilio: any) => {
-        return {
-          id: auxilio.id,
-          nome: auxilio.nome, // Preservando mais dados do auxílio
-          valor_minimo: auxilio.valor_minimo,
-          tem_vagas: auxilio.tem_vagas,
-          inscrito: auxilio.inscrito,
-          elegivel: auxilio.elegivel,
-        };
-      });
-
-      // Atualizando o estado com os dados completos dos auxílios
-      setAuxilios(auxilios);
+      setCidadao(cidadao)
+      setAuxilios(cidadao.registro_auxilios);
 
     } catch (error) {
       console.error("Erro ao verificar o CPF:", error);
       alert("Ocorreu um erro ao processar sua solicitação. Tente novamente.");
     }
   };
+
+  // Filtrando os auxílios com elegivel: true e inscrito: false
+  const auxiliosElegiveis = auxilios.filter(
+    (auxilio) => auxilio.elegivel === true && auxilio.inscrito === false
+  );
+
+  // Filtrando os auxílios com inscrito: true
+  const auxiliosInscritos = auxilios.filter(
+    (auxilio) => auxilio.inscrito === true
+  );
 
   return (
     <div>
@@ -74,21 +63,39 @@ export default function Home() {
         </button>
       </form>
 
-      {/* Exibindo a mensagem retornada */}
-      {mensagem && (
+      <h1>nome: {cidadao?.nome}</h1>
+      <h2>dependentes: </h2>
+      <ul className="list-disc pl-5">
+        {cidadao?.registro_dependentes.map((dependente) => (
+          <li key={dependente.id}>
+            <Dependente dependente={dependente.dependente} />
+          </li>
+        ))}
+      </ul>
+
+
+      {/* Exibindo os auxílios elegíveis (elegivel: true, inscrito: false) */}
+      {auxiliosElegiveis.length > 0 && (
         <div className="mt-6">
-          <h3>Mensagem: {mensagem}</h3> {/* Aqui estamos renderizando apenas a string */}
+          <h2>Auxílios elegíveis:</h2>
+          <ul className="list-disc pl-5">
+            {auxiliosElegiveis.map((auxilio) => (
+              <li key={auxilio.id}>
+                <AuxiliosElegiveis auxilio={auxilio.auxilio} />
+              </li>
+            ))}
+          </ul>
         </div>
       )}
 
-      {/* Exibindo os auxílios em uma lista usando o componente AuxiliosInscritos */}
-      {auxilios.length > 0 && (
+      {/* Exibindo os auxílios inscritos (inscrito: true) */}
+      {auxiliosInscritos.length > 0 && (
         <div className="mt-6">
-          <h2>Auxílios do cidadão:</h2>
+          <h2>Auxílios inscritos:</h2>
           <ul className="list-disc pl-5">
-            {auxilios.map((auxilio) => (
+            {auxiliosInscritos.map((auxilio) => (
               <li key={auxilio.id}>
-                <AuxiliosInscritos auxilio={auxilio} />
+                <AuxiliosInscritos auxilio={auxilio.auxilio} />
               </li>
             ))}
           </ul>

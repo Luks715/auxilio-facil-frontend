@@ -16,8 +16,6 @@ export interface AuxilioData {
     valor_minimo: number;
 //    descricao: string;
     tem_vagas: boolean;
-    elegivel: boolean;
-    inscrito: boolean;
 
     //requisitos: RequisitoData[]
 }
