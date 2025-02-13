@@ -1,28 +1,25 @@
-export interface RequisitoData {
-    id: number;
+import { CidadaoAuxilios } from "./cidadao";
 
-    descricao: string;
-    auxilioId: number;
-}
+//export interface RequisitoData{
+//    id: number;
 
-export interface CidadaoAuxilio {
-    id: number;
-    cidadaoId: number;
-    auxilioId: number;
-    inscrito: boolean;
-    elegivel: boolean;
-}
+//    descricao: string;
+//    auxilio_id: number;
+
+//    auxilio: AuxilioData
+//}
 
 export interface AuxilioData {
     id: number;
 
     nome: string;
     valor_minimo: number;
-    descricao: string;
+//    descricao: string;
     tem_vagas: boolean;
+    elegivel: boolean;
+    inscrito: boolean;
 
-    requisitos: RequisitoData[];
-    CidadaoAuxilio: CidadaoAuxilio[];
+    //requisitos: RequisitoData[]
 }
 
 export interface UpdateAuxilioData {
@@ -30,11 +27,4 @@ export interface UpdateAuxilioData {
     valor_minimo?: number;
     descricao?: string;
     tem_vagas?: boolean;
-}
-
-export interface CreateAuxilioData {
-    nome: string;
-    descricao: string;
-    valor_minimo: number;
-    tem_vagas: boolean;
 }

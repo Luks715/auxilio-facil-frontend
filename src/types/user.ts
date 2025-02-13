@@ -1,10 +1,12 @@
+import { CidadaoCondicoes, CondicaoData } from "./cidadao";
+
 export interface UserData {
     id: number;
     
     tipo: string;
     email: string;
     senha: string;
-    cidadaoId: number;
+    cidadao_id: number;
 }
   
 export interface UpdateUser {
@@ -16,7 +18,7 @@ export interface ConnectUser {
     tipo: string;
     email: string;
     senha: string;
-    cidadaoId: number;
+    cidadao_id: number;
 }
   
 export interface CreateUser {
@@ -29,6 +31,7 @@ export interface CreateUser {
     cpf: string;
     nome: string;
     data_nascimento: Date;
+    condicoes: CondicaoData[];
 
     email: string;
     senha: string;

@@ -19,9 +19,9 @@ export const findUserById = async (id: number): Promise<UserData> => {
 };
 
 export const findUserByCpf = async (cpf: string): Promise<number> => {
-  const response = await api.get(`/user/findByCpf/${cpf}`);
+  const response = await api.get(`/user/findUserByCpf/${cpf}`); 
   return response.data;
-} 
+}
 
 export const updateUser = async (id: number, dados: UpdateUser) => {
   try {

@@ -20,10 +20,11 @@ export default function Login() {
       }
 
       // Enviando a senha e o CPF para autenticação
-      const response = await login(cpf, senha);
+      const response = await login("123.456.789-01", "senha123");
+      console.log("Resposta da autenticação:", response);
 
       // Salvando o token e o cidadão no localStorage
-      localStorage.removeItem("cpf");
+      //localStorage.removeItem("cpf");
       localStorage.setItem("token", response.token);
       localStorage.setItem("cidadao", JSON.stringify(response.cidadao));
 

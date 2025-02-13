@@ -8,7 +8,7 @@ import { findCidadaoByCpf } from "@/app/_api/cidadaosApi";
 
 export default function SignIn() {
   const [input, setInput] = useState<ConnectUser>({
-    cidadaoId: NaN, 
+    cidadao_id: NaN, 
     email: "",
     senha: "",
     tipo: "cidadao",
